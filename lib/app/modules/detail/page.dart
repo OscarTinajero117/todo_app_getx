@@ -52,6 +52,30 @@ class DetailPage extends StatelessWidget {
               ],
             ),
           ),
+          Obx(
+            () {
+              final totalTodos = homeController.doingTodos.length +
+                  homeController.doneTodos.length;
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: 16.0.wp,
+                  top: 3.0.wp,
+                  right: 16.0.wp,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      '$totalTodos Tasks',
+                      style: TextStyle(
+                        fontSize: 12.0.sp,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
