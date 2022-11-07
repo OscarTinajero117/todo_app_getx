@@ -23,81 +23,91 @@ class AddCard extends StatelessWidget {
       margin: EdgeInsets.all(3.0.wp),
       child: InkWell(
         onTap: () async {
-          await Get.defaultDialog(
-            titlePadding: EdgeInsets.symmetric(vertical: 5.0.wp),
-            radius: 5,
-            title: 'Task Type',
-            content: Form(
-              key: homeController.formKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
-                    child: TextFormField(
-                      controller: homeController.editController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Title',
+          await Get.dialog(
+            AlertDialog(
+              titlePadding: EdgeInsets.symmetric(vertical: 5.0.wp),
+              title: Text(
+                'Task Type',
+                style: TextStyle(
+                  fontSize: 14.0.sp,
+                ),
+              ),
+              scrollable: true,
+              content: Form(
+                key: homeController.formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
+                        child: TextFormField(
+                          controller: homeController.editController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Title',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter your task title';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your task title';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0.wp),
-                    child: Wrap(
-                      spacing: 2.0.wp,
-                      children: icons
-                          .map((e) => Obx(() {
-                                final index = icons.indexOf(e);
-                                return ChoiceChip(
-                                  selectedColor: Colors.grey.shade200,
-                                  pressElevation: 0,
-                                  backgroundColor: Colors.white,
-                                  label: e,
-                                  selected: homeController.chipIndex == index,
-                                  onSelected: (value) {
-                                    homeController.chipIndex =
-                                        value ? index : 0;
-                                  },
-                                );
-                              }))
-                          .toList(),
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.0.wp),
+                        child: Wrap(
+                          spacing: 2.0.wp,
+                          children: icons
+                              .map((e) => Obx(() {
+                                    final index = icons.indexOf(e);
+                                    return ChoiceChip(
+                                      selectedColor: Colors.grey.shade200,
+                                      pressElevation: 0,
+                                      backgroundColor: Colors.white,
+                                      label: e,
+                                      selected:
+                                          homeController.chipIndex == index,
+                                      onSelected: (value) {
+                                        homeController.chipIndex =
+                                            value ? index : 0;
+                                      },
+                                    );
+                                  }))
+                              .toList(),
+                        ),
                       ),
-                      minimumSize: const Size(150, 40),
-                    ),
-                    onPressed: () {
-                      if (homeController.formKey.currentState!.validate()) {
-                        int icon =
-                            icons[homeController.chipIndex].icon!.codePoint;
-                        String color =
-                            icons[homeController.chipIndex].color!.toHex();
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          minimumSize: const Size(150, 40),
+                        ),
+                        onPressed: () {
+                          if (homeController.formKey.currentState!.validate()) {
+                            int icon =
+                                icons[homeController.chipIndex].icon!.codePoint;
+                            String color =
+                                icons[homeController.chipIndex].color!.toHex();
 
-                        final task = Task(
-                          color: color,
-                          icon: icon,
-                          title: homeController.editController.text,
-                        );
-                        Get.back();
-                        homeController.addTask(task)
-                            ? EasyLoading.showSuccess('Create Sucess')
-                            : EasyLoading.showError('Duplicate Task');
-                      }
-                    },
-                    child: const Text('Confirm'),
+                            final task = Task(
+                              color: color,
+                              icon: icon,
+                              title: homeController.editController.text,
+                            );
+                            Get.back();
+                            homeController.addTask(task)
+                                ? EasyLoading.showSuccess('Create Sucess')
+                                : EasyLoading.showError('Duplicate Task');
+                          }
+                        },
+                        child: const Text('Confirm'),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           );

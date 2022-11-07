@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../modules/home/binding.dart';
 import '../modules/home/page.dart';
-import 'app_routes.dart';
+import 'routes.dart';
 
 class AppPages {
   static final List<GetPage> pages = [
