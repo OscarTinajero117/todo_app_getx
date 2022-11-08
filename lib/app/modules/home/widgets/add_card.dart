@@ -28,8 +28,9 @@ class AddCard extends StatelessWidget {
               titlePadding: EdgeInsets.symmetric(vertical: 5.0.wp),
               title: Text(
                 'Task Type',
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14.0.sp,
+                  fontSize: 16.0.sp,
                 ),
               ),
               scrollable: true,
@@ -67,9 +68,10 @@ class AddCard extends StatelessWidget {
                                       backgroundColor: Colors.white,
                                       label: e,
                                       selected:
-                                          homeController.chipIndex == index,
+                                          homeController.chipIndex.value ==
+                                              index,
                                       onSelected: (value) {
-                                        homeController.chipIndex =
+                                        homeController.chipIndex.value =
                                             value ? index : 0;
                                       },
                                     );
@@ -87,10 +89,12 @@ class AddCard extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (homeController.formKey.currentState!.validate()) {
-                            int icon =
-                                icons[homeController.chipIndex].icon!.codePoint;
-                            String color =
-                                icons[homeController.chipIndex].color!.toHex();
+                            int icon = icons[homeController.chipIndex.value]
+                                .icon!
+                                .codePoint;
+                            String color = icons[homeController.chipIndex.value]
+                                .color!
+                                .toHex();
 
                             final task = Task(
                               color: color,
@@ -112,7 +116,7 @@ class AddCard extends StatelessWidget {
             ),
           );
           homeController.editController.clear();
-          homeController.chipIndex = 0;
+          homeController.chipIndex.value = 0;
         },
         child: DottedBorder(
           color: Colors.grey.shade400,

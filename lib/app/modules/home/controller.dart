@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,13 +15,11 @@ class HomeController extends GetxController {
 
   final editController = TextEditingController();
 
-  final _chipIndex = 0.obs;
-  int get chipIndex => _chipIndex.value;
-  set chipIndex(int value) => _chipIndex.value = value;
+  final chipIndex = 0.obs;
 
-  final _deleting = false.obs;
-  bool get deleting => _deleting.value;
-  set deleting(bool value) => _deleting.value = value;
+  final tabIndex = 0.obs;
+
+  final deleting = false.obs;
 
   final tasks = <Task>[].obs;
 
@@ -88,5 +87,89 @@ class HomeController extends GetxController {
         doingTodos.add(element);
       }
     }
+  }
+
+  bool addTodo(String title) {
+    final todo = {'title': title, 'done': false};
+    if (doingTodos
+        .any((element) => mapEquals<String, dynamic>(todo, element))) {
+      return false;
+    }
+    final doneTodo = {'title': title, 'done': true};
+    if (doneTodos
+        .any((element) => mapEquals<String, dynamic>(doneTodo, element))) {
+      return false;
+    }
+    doingTodos.add(todo);
+    return true;
+  }
+
+  void updateTodos() {
+    final newTodos = <Map<String, dynamic>>[];
+    newTodos.addAll([
+      ...doingTodos,
+      ...doneTodos,
+    ]);
+
+    final newTask = task.value!.copyWith(todos: newTodos);
+    final oldIndex = tasks.indexOf(task.value);
+    tasks[oldIndex] = newTask;
+    tasks.refresh();
+  }
+
+  void doneTodo(String title) {
+    final doingTodo = {'title': title, 'done': false};
+    final index = doingTodos.indexWhere(
+        (element) => mapEquals<String, dynamic>(doingTodo, element));
+    doingTodos.removeAt(index);
+    final doneTodo = {'title': title, 'done': true};
+    doneTodos.add(doneTodo);
+    doingTodos.refresh();
+    doneTodos.refresh();
+  }
+
+  void deleteDoneTodo(dynamic doneTodo) {
+    final index = doneTodos
+        .indexWhere((element) => mapEquals<String, dynamic>(doneTodo, element));
+
+    doneTodos.removeAt(index);
+    doneTodos.refresh();
+  }
+
+  bool isTodoEmpty(Task task) => task.todos == null || task.todos!.isEmpty;
+
+  int getDoneTodo(Task task) {
+    int result = 0;
+    for (int i = 0; i < task.todos!.length; i++) {
+      if (task.todos![i]['done'] == true) {
+        result += 1;
+      }
+    }
+    return result;
+  }
+
+  int getTotalTask() {
+    int result = 0;
+    for (var i = 0; i < tasks.length; i++) {
+      if (tasks[i].todos != null) {
+        result += tasks[i].todos!.length;
+      }
+    }
+    return result;
+  }
+
+  int getTotalDoneTask() {
+    int result = 0;
+    for (var i = 0; i < tasks.length; i++) {
+      if (tasks[i].todos != null) {
+        for (var j = 0; j < tasks[i].todos!.length; j++) {
+          if (tasks[i].todos![j]['done'] == true) {
+            result += 1;
+          }
+        }
+        // result += tasks[i].todos!.length;
+      }
+    }
+    return result;
   }
 }
