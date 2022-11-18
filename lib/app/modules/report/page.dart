@@ -144,7 +144,7 @@ class ReportPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 3.0.wp),
+          SizedBox(width: 2.0.wp),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
