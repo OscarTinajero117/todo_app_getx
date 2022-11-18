@@ -12,15 +12,19 @@ import 'app/routers/routes.dart';
 void main() async {
   await GetStorage.init();
   await Get.putAsync(() => StorageService().init());
-  runApp(GetMaterialApp(
-    title: 'To Do App',
-    debugShowCheckedModeBanner: false,
-    initialRoute: Routes.HOME,
-    theme: ThemeData.light(),
-    defaultTransition: Transition.fade,
-    initialBinding: HomeBinding(),
-    getPages: AppPages.pages,
-    home: const HomePage(),
-    builder: EasyLoading.init(),
-  ));
+  runApp(
+    GetMaterialApp(
+      title: 'To Do App',
+      debugShowCheckedModeBanner: false,
+      initialRoute: Routes.HOME,
+      theme: ThemeData(
+        primaryColor: Colors.green,
+      ),
+      defaultTransition: Transition.fade,
+      initialBinding: HomeBinding(),
+      getPages: AppPages.pages,
+      home: const HomePage(),
+      builder: EasyLoading.init(),
+    ),
+  );
 }
