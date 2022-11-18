@@ -1,4 +1,4 @@
-# todo_app_getx
+# To Do App with GetX
 
 A new Flutter project.
 
